@@ -1,0 +1,28 @@
+OrdererOrgs:
+- Name: OrdererOrg
+  Domain: orderer-org
+  CommonName: orderer-org
+  Specs:
+  - Hostname: orderer0
+    CommonName: "{{.Hostname}}"
+PeerOrgs:
+- Name: ProducerOrg
+  Domain: producer-org
+  Specs:
+  - Hostname: producer-peer
+    CommonName: "{{.Hostname}}"
+- Name: DealerOrg
+  Domain: dealer-org
+  Specs:
+  - Hostname: dealer-peer
+    CommonName: "{{.Hostname}}"
+- Name: ConsumerOrg
+  Domain: consumer-org
+  Specs:
+  - Hostname: consumer-peer
+    CommonName: "{{.Hostname}}"
+- Name: AccreditorOrg
+  Domain: accreditor-org
+  Specs:
+  - Hostname: accreditor-peer
+    CommonName: "{{.Hostname}}"

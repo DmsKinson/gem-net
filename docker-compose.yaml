@@ -1,0 +1,132 @@
+version: '2'
+
+services:
+
+  producer-ca:
+  container_name: producer-ca
+  extends:
+    file: ./base/ca-base.yaml
+    service: ca-base
+  image: producer-ca
+  ports:
+  - 7054:7054
+
+  dealer-ca:
+    container-name: dealer-ca
+    extends:
+      file: ./base/ca-base.yaml
+      service: ca-base
+    image: dealer-ca
+    ports:
+    - 8054:7054
+
+  consumer-ca:
+    container-name: consumer-ca
+    extends:
+      file: ./base/ca-base.yaml
+      service: ca-base
+    image: consumer-ca
+    ports:
+    - 9054:7054
+
+  accreditor-ca:
+    container-name: accreditor-ca
+    extends:
+      file: ./base/ca-base.yaml
+      service: ca-base
+    image: accreditor-ca
+    ports:
+    - 10054:7054
+
+  orderer:
+    container_name: orderer
+    image: orderer
+    environment: 
+    - ORDERER_GENERAL_LOGLEVEL=debug
+    - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+    - ORDERER_GENERAL_GENESISMETHOD=file
+    - ORDERER_GENERAL_GENESISFILE=/orderer/crypto/genesis.block
+    - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+    - ORDERER_GENERAL_LOCALMSPDIR=/orderer/crypto/msp
+    - ORDERER_GENERAL_TLS_ENABLED=true
+    - ORDERER_GENERAL_TLS_PRIVATEKEY=/orderer/crypto/tls/server.key
+    - ORDERER_GENERAL_TLS_CERTIFICATE=/orderer/crypto/tls/server.crt
+    - ORDERER_GENERAL_TLS_ROOTCAS=[/orderer/crypto/tls/ca.crt]
+    working_dir: /orderer
+    command: orderer
+    ports:
+    - 7050:7050
+
+  producer-peer:
+    container_name: producer-peer
+    extends:
+      file: ./peer-base.yaml
+      service: peer-base
+    image: producer-peer
+    environment:
+    - CORE_PEER_ID=producer-peer
+    - CORE_PEER_ADDRESS=producer-peer:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=producer-peer:7051
+    - CORE_PEER_LOCALMSPID=ProducerOrgMSP
+    ports:
+    - 7051:7051
+    - 7053:7053
+    depends_on:
+    - orderer0
+
+  dealer-peer:
+    container_name: dealer-peer
+    extends:
+      file: ./peer-base.yaml
+      service: peer-base
+    image: dealer-peer
+    environment:
+    - CORE_PEER_ID=dealer-peer
+    - CORE_PEER_ADDRESS=dealer-peer:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=dealer-peer:7051
+    - CORE_PEER_LOCALMSPID=DealerOrgMSP
+    ports:
+    - 8051:7051
+    - 8053:7053
+    depends_on:
+    - orderer0
+    - producer-peer
+
+  consumer-peer:
+    container_name: consumer-peer
+    extends:
+      file: ./peer-base.yaml
+      service: peer-base
+    image: consumer-peer
+    environment:
+    - CORE_PEER_ID=consumer-peer
+    - CORE_PEER_ADDRESS=consumer-peer:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=consumer-peer:7051
+    - CORE_PEER_LOCALMSPID=ConsumerOrgMSP
+    ports:
+    - 9051:7051
+    - 9053:7053
+    depends_on:
+    - orderer0
+    - producer-peer
+    - dealer-peer
+
+  accreditor-peer:
+    container_name: accreditor-peer
+    extends:
+      file: ./peer-base.yaml
+      service: peer-base
+    image: accreditor-peer
+    environment:
+    - CORE_PEER_ID=accreditor-peer
+    - CORE_PEER_ADDRESS=accreditor-peer:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=accreditor-peer:7051
+    - CORE_PEER_LOCALMSPID=AccreditorOrgMSP
+    ports:
+    - 10051:7051
+    - 10053:7053
+    depends_on:
+    - orderer0
+    - producer-peer
+    - dealer-peer
+    - consumer-peer
