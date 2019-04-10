@@ -13,7 +13,7 @@ PEERS=$CLIPATH/peerOrganizations
 PEERS_DIR={orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}
 
 rm -rf $CLIPATH
-$PROJPATH/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
+$PROJPATH/bin/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
 
 sh generate-cfgtx.sh
 
