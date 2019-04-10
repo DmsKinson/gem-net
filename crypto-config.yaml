@@ -3,7 +3,7 @@ OrdererOrgs:
   Domain: orderer-org
   CommonName: orderer-org
   Specs:
-  - Hostname: orderer0
+  - Hostname: orderer
     CommonName: "{{.Hostname}}"
 PeerOrgs:
 - Name: ProducerOrg

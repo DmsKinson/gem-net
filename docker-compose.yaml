@@ -72,7 +72,7 @@ services:
     - 7051:7051
     - 7053:7053
     depends_on:
-    - orderer0
+    - orderer
 
   dealer-peer:
     container_name: dealer-peer
@@ -89,7 +89,7 @@ services:
     - 8051:7051
     - 8053:7053
     depends_on:
-    - orderer0
+    - orderer
     - producer-peer
 
   consumer-peer:
@@ -107,7 +107,7 @@ services:
     - 9051:7051
     - 9053:7053
     depends_on:
-    - orderer0
+    - orderer
     - producer-peer
     - dealer-peer
 
@@ -126,7 +126,7 @@ services:
     - 10051:7051
     - 10053:7053
     depends_on:
-    - orderer0
+    - orderer
     - producer-peer
     - dealer-peer
     - consumer-peer
