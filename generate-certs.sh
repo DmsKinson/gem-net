@@ -1,5 +1,4 @@
 #!/bin/sh
-# Exit when error occurs
 set -e
 
 echo
@@ -10,72 +9,88 @@ PROJPATH=$(pwd)
 CLIPATH=$PROJPATH/cli/peers
 ORDERERS=$CLIPATH/ordererOrganizations
 PEERS=$CLIPATH/peerOrganizations
-PEERS_DIR={orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}
 
 rm -rf $CLIPATH
-$PROJPATH/bin/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
+$PROJPATH/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
 
 sh generate-cfgtx.sh
 
-rm -rf $PROJPATH/{$PEERS_DIR}
-rm -rf $PROJPATH/{orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}/crypto
-mkdir $PROJPATH/{orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}/crypto
-cp -r $ORDERERS/orderer-org/orderers/orderer/{msp,tls} $PROJPATH/orderer/crypto
-cp -r $PEERS/producer-org/peers/producer-peer/{msp,tls} $PROJPATH/producerPeer/crypto
-cp -r $PEERS/consumer-org/peers/consumer-peer/{msp,tls} $PROJPATH/consumerPeer/crypto
-cp -r $PEERS/dealer-org/peers/dealer-peer/{msp,tls} $PROJPATH/dealerPeer/crypto
-cp -r $PEERS/accreditor-org/peers/accreditor-peer/{msp,tls} $PROJPATH/accreditorPeer/crypto
+# rm -rf $PROJPATH/{orderer,producerPeer,accreditorPeer,repairShopPeer,dealerPeer}/crypto
+rm -rf $PROJPATH/orderer/crypto
+rm -rf $PROJPATH/producerPeer/crypto
+rm -rf $PROJPATH/accreditorPeer/crypto
+rm -rf $PROJPATH/repairShopPeer/crypto
+rm -rf $PROJPATH/dealerPeer/crypto
+# mkdir $PROJPATH/{orderer,producerPeer,accreditorPeer,repairShopPeer,dealerPeer}/crypto
+mkdir $PROJPATH/orderer/crypto
+mkdir $PROJPATH/producerPeer/crypto
+mkdir $PROJPATH/accreditorPeer/crypto
+mkdir $PROJPATH/repairShopPeer/crypto
+mkdir $PROJPATH/dealerPeer/crypto
+# cp -r $ORDERERS/orderer-org/orderers/orderer0/{msp,tls} $PROJPATH/orderer/crypto
+cp -r $ORDERERS/orderer-org/orderers/orderer0/msp $PROJPATH/orderer/crypto
+cp -r $ORDERERS/orderer-org/orderers/orderer0/tls $PROJPATH/orderer/crypto
+# cp -r $PEERS/producer-org/peers/producer-peer/{msp,tls} $PROJPATH/producerPeer/crypto
+cp -r $PEERS/producer-org/peers/producer-peer/msp $PROJPATH/producerPeer/crypto
+cp -r $PEERS/producer-org/peers/producer-peer/tls $PROJPATH/producerPeer/crypto
+# cp -r $PEERS/accreditor-org/peers/accreditor-peer/{msp,tls} $PROJPATH/accreditorPeer/crypto
+cp -r $PEERS/accreditor-org/peers/accreditor-peer/msp $PROJPATH/accreditorPeer/crypto
+cp -r $PEERS/accreditor-org/peers/accreditor-peer/tls $PROJPATH/accreditorPeer/crypto
+# cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/{msp,tls} $PROJPATH/repairShopPeer/crypto
+cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/msp $PROJPATH/repairShopPeer/crypto
+cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/tls $PROJPATH/repairShopPeer/crypto
+# cp -r $PEERS/dealer-org/peers/dealer-peer/{msp,tls} $PROJPATH/dealerPeer/crypto
+cp -r $PEERS/dealer-org/peers/dealer-peer/msp $PROJPATH/dealerPeer/crypto
+cp -r $PEERS/dealer-org/peers/dealer-peer/tls $PROJPATH/dealerPeer/crypto
 cp $CLIPATH/genesis.block $PROJPATH/orderer/crypto/
 
+PRODUCERCAPATH=$PROJPATH/producerCA
+ACCREDITORCAPATH=$PROJPATH/accreditorCA
+CONSUMERCAPATH=$PROJPATH/repairShopCA
+DEALERCAPATH=$PROJPATH/dealerCA
 
-PRODUCERPATH=$PROJPATH/producerCA
-ACCREDITOERPATH=$PROJPATH/accreditorCA
-CONSUMERPATH=$PROJPATH/consumerCA
-DEALERPATH=$PROJPATH/dealerCA
+# rm -rf {$PRODUCERCAPATH,$ACCREDITORCAPATH,$CONSUMERCAPATH,$DEALERCAPATH}/{ca,tls}
+rm -rf $PRODUCERCAPATH/ca
+rm -rf $ACCREDITORCAPATH/ca
+rm -rf $CONSUMERCAPATH/ca
+rm -rf $DEALERCAPATH/ca
+rm -rf $PRODUCERCAPATH/tls
+rm -rf $ACCREDITORCAPATH/tls
+rm -rf $CONSUMERCAPATH/tls
+rm -rf $DEALERCAPATH/tls
+# mkdir -p {$PRODUCERCAPATH,$ACCREDITORCAPATH,$CONSUMERCAPATH,$DEALERCAPATH}/{ca,tls}
+mkdir -p $PRODUCERCAPATH/ca
+mkdir -p $ACCREDITORCAPATH/ca
+mkdir -p $CONSUMERCAPATH/ca
+mkdir -p $DEALERCAPATH/ca
+mkdir -p $PRODUCERCAPATH/tls
+mkdir -p $ACCREDITORCAPATH/tls
+mkdir -p $CONSUMERCAPATH/tls
+mkdir -p $DEALERCAPATH/tls
+cp $PEERS/producer-org/ca/* $PRODUCERCAPATH/ca
+cp $PEERS/producer-org/tlsca/* $PRODUCERCAPATH/tls
+mv $PRODUCERCAPATH/ca/*_sk $PRODUCERCAPATH/ca/key.pem
+mv $PRODUCERCAPATH/ca/*-cert.pem $PRODUCERCAPATH/ca/cert.pem
+mv $PRODUCERCAPATH/tls/*_sk $PRODUCERCAPATH/tls/key.pem
+mv $PRODUCERCAPATH/tls/*-cert.pem $PRODUCERCAPATH/tls/cert.pem
 
-rm -rf {$PRODUCERPATH,$ACCREDITOERPATH,$CONSUMERPATH,$DEALERPATH}/{ca,tls}
-mkdir -p {$PRODUCERPATH,$ACCREDITOERPATH,$CONSUMERPATH,$DEALERPATH}/{ca,tls}
-cp $PEERS/producer-org/ca/* $PRODUCERPATH/ca
-cp $PEERS/producer-org/tlsca/* $PRODUCERPATH/tls
-mv $PRODUCERPATH/ca/*_sk $PRODUCERPATH/ca/key.pem
-mv $PRODUCERPATH/ca/*-cert.pem $PRODUCERPATH/ca/cert.pem
-mv $PRODUCERPATH/tls/*_sk $PRODUCERPATH/tls/key.pem
-mv $PRODUCERPATH/tls/*-cert.pem $PRODUCERPATH/tls/cert.pem
+cp $PEERS/accreditor-org/ca/* $ACCREDITORCAPATH/ca
+cp $PEERS/accreditor-org/tlsca/* $ACCREDITORCAPATH/tls
+mv $ACCREDITORCAPATH/ca/*_sk $ACCREDITORCAPATH/ca/key.pem
+mv $ACCREDITORCAPATH/ca/*-cert.pem $ACCREDITORCAPATH/ca/cert.pem
+mv $ACCREDITORCAPATH/tls/*_sk $ACCREDITORCAPATH/tls/key.pem
+mv $ACCREDITORCAPATH/tls/*-cert.pem $ACCREDITORCAPATH/tls/cert.pem
 
-cp $PEERS/accreditor-org/ca/* $ACCREDITOERPATH/ca
-cp $PEERS/accreditor-org/tlsca/* $ACCREDITOERPATH/tls
-mv $ACCREDITOERPATH/ca/*_sk $ACCREDITOERPATH/ca/key.pem
-mv $ACCREDITOERPATH/ca/*-cert.pem $ACCREDITOERPATH/ca/cert.pem
-mv $ACCREDITOERPATH/tls/*_sk $ACCREDITOERPATH/tls/key.pem
-mv $ACCREDITOERPATH/tls/*-cert.pem $ACCREDITOERPATH/tls/cert.pem
+cp $PEERS/repairdealer-org/ca/* $CONSUMERCAPATH/ca
+cp $PEERS/repairdealer-org/tlsca/* $CONSUMERCAPATH/tls
+mv $CONSUMERCAPATH/ca/*_sk $CONSUMERCAPATH/ca/key.pem
+mv $CONSUMERCAPATH/ca/*-cert.pem $CONSUMERCAPATH/ca/cert.pem
+mv $CONSUMERCAPATH/tls/*_sk $CONSUMERCAPATH/tls/key.pem
+mv $CONSUMERCAPATH/tls/*-cert.pem $CONSUMERCAPATH/tls/cert.pem
 
-cp $PEERS/dealer-org/ca/* $CONSUMERPATH/ca
-cp $PEERS/dealer-org/tlsca/* $CONSUMERPATH/tls
-mv $CONSUMERPATH/ca/*_sk $CONSUMERPATH/ca/key.pem
-mv $CONSUMERPATH/ca/*-cert.pem $CONSUMERPATH/ca/cert.pem
-mv $CONSUMERPATH/tls/*_sk $CONSUMERPATH/tls/key.pem
-mv $CONSUMERPATH/tls/*-cert.pem $CONSUMERPATH/tls/cert.pem
-
-cp $PEERS/accreditor-org/ca/* $DEALERPATH/ca
-cp $PEERS/accreditor-org/tlsca/* $DEALERPATH/tls
-mv $DEALERPATH/ca/*_sk $DEALERPATH/ca/key.pem
-mv $DEALERPATH/ca/*-cert.pem $DEALERPATH/ca/cert.pem
-mv $DEALERPATH/tls/*_sk $DEALERPATH/tls/key.pem
-mv $DEALERPATH/tls/*-cert.pem $DEALERPATH/tls/cert.pem
-
-# WEBCERTS=$PROJPATH/web/certs
-# rm -rf $WEBCERTS
-# mkdir -p $WEBCERTS
-# cp $PROJPATH/orderer/crypto/tls/ca.crt $WEBCERTS/ordererOrg.pem
-# cp $PROJPATH/producerPeer/crypto/tls/ca.crt $WEBCERTS/producerOrg.pem
-# cp $PROJPATH/accreditorPeer/crypto/tls/ca.crt $WEBCERTS/accreditorOrg.pem
-# cp $PROJPATH/consumerPeer/crypto/tls/ca.crt $WEBCERTS/consumerOrg.pem
-# cp $PROJPATH/accreditorPeer/crypto/tls/ca.crt $WEBCERTS/accreditorOrg.pem
-# cp $PEERS/producer-org/users/Admin@producer-org/msp/keystore/* $WEBCERTS/Admin@producer-org-key.pem
-# cp $PEERS/producer-org/users/Admin@producer-org/msp/signcerts/* $WEBCERTS/
-# cp $PEERS/accreditor-org/users/Admin@accreditor-org/msp/keystore/* $WEBCERTS/Admin@accreditor-org-key.pem
-# cp $PEERS/accreditor-org/users/Admin@accreditor-org/msp/signcerts/* $WEBCERTS/
-# cp $PEERS/accreditor-org/users/Admin@accreditor-org/msp/keystore/* $WEBCERTS/Admin@accreditor-org-key.pem
-# cp $PEERS/accreditor-org/users/Admin@accreditor-org/msp/signcerts/* $WEBCERTS/
-# cp $PEERS/dealer-org/users/Admin@dealer-org/msp/keystore/* $WEBCERTS/Admin@dealer-org-key.pem
-# cp $PEERS/dealer-org/users/Admin@dealer-org/msp/signcerts/* $WEBCERTS/
+cp $PEERS/dealer-org/ca/* $DEALERCAPATH/ca
+cp $PEERS/dealer-org/tlsca/* $DEALERCAPATH/tls
+mv $DEALERCAPATH/ca/*_sk $DEALERCAPATH/ca/key.pem
+mv $DEALERCAPATH/ca/*-cert.pem $DEALERCAPATH/ca/cert.pem
+mv $DEALERCAPATH/tls/*_sk $DEALERCAPATH/tls/key.pem
+mv $DEALERCAPATH/tls/*-cert.pem $DEALERCAPATH/tls/cert.pem

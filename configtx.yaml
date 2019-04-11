@@ -1,26 +1,19 @@
 ---
-Profiles:
-  FourOrgsGenesis:
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-      - *OrdererOrg
-    Consortiums:
-      GemConsortium:
-        Organizations:
-        - *ProducerOrg
-        - *DealerOrg
-        - *ConsumerOrg
-        - *AccreditorOrg
-  FourOrgsChannel:
-    Consortium: GemConsortium
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-      - *ProducerOrg
-      - *DealerOrg
-      - *ConsumerOrg
-      - *AccreditorOrg
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+  - orderer:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+
+Application: &ApplicationDefaults
+  Organizations:
+
+
 
 Organizations:
 - &OrdererOrg
@@ -56,16 +49,25 @@ Organizations:
     - Host: accreditor-peer
       Port: 7051
 
-Orderer: &OrdererDefaults
-  OrdererType: solo
-  Addresses:
-  - orderer:7050
-  BatchTimeout: 2s
-  BatchSize:
-    MaxMessageCount: 10
-    AbsoluteMaxBytes: 99 MB
-    PreferredMaxBytes: 512 KB
-  Organizations:
-
-Application: &ApplicationDefaults
-  Organizations:
+Profiles:
+  FourOrgsGenesis:
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+      - *OrdererOrg
+    Consortiums:
+      GemConsortium:
+        Organizations:
+        - *ProducerOrg
+        - *DealerOrg
+        - *ConsumerOrg
+        - *AccreditorOrg
+  FourOrgsChannel:
+    Consortium: GemConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+      - *ProducerOrg
+      - *DealerOrg
+      - *ConsumerOrg
+      - *AccreditorOrg

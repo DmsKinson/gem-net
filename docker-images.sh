@@ -1,6 +1,14 @@
 #!/bin/bash
 set -eu
 
+# Select images that local don't have
+# dockerCheck(){
+#     local LOCAL_IMAGES=docker images | awk '/hyperledger/{print $1}' | sed 's/hyperledger\///g' | uniq
+#     for IMAGE in peer orderer ccenv ;do
+#         if [$IMAGE == ]
+
+# }
+
 dockerFabricPull() {
   local FABRIC_TAG=$1
   for IMAGES in peer orderer ccenv; do
