@@ -27,18 +27,18 @@ mkdir $PROJPATH/producerPeer/crypto
 mkdir $PROJPATH/accreditorPeer/crypto
 mkdir $PROJPATH/consumerPeer/crypto
 mkdir $PROJPATH/dealerPeer/crypto
-# cp -r $ORDERERS/orderer-org/orderers/orderer0/{msp,tls} $PROJPATH/orderer/crypto
-cp -r $ORDERERS/orderer-org/orderers/orderer0/msp $PROJPATH/orderer/crypto
-cp -r $ORDERERS/orderer-org/orderers/orderer0/tls $PROJPATH/orderer/crypto
+# cp -r $ORDERERS/orderer-org/orderers/orderer/{msp,tls} $PROJPATH/orderer/crypto
+cp -r $ORDERERS/orderer-org/orderers/orderer/msp $PROJPATH/orderer/crypto
+cp -r $ORDERERS/orderer-org/orderers/orderer/tls $PROJPATH/orderer/crypto
 # cp -r $PEERS/producer-org/peers/producer-peer/{msp,tls} $PROJPATH/producerPeer/crypto
 cp -r $PEERS/producer-org/peers/producer-peer/msp $PROJPATH/producerPeer/crypto
 cp -r $PEERS/producer-org/peers/producer-peer/tls $PROJPATH/producerPeer/crypto
 # cp -r $PEERS/accreditor-org/peers/accreditor-peer/{msp,tls} $PROJPATH/accreditorPeer/crypto
 cp -r $PEERS/accreditor-org/peers/accreditor-peer/msp $PROJPATH/accreditorPeer/crypto
 cp -r $PEERS/accreditor-org/peers/accreditor-peer/tls $PROJPATH/accreditorPeer/crypto
-# cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/{msp,tls} $PROJPATH/consumerPeer/crypto
-cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/msp $PROJPATH/consumerPeer/crypto
-cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/tls $PROJPATH/consumerPeer/crypto
+# cp -r $PEERS/consumer-org/peers/consumer-peer/{msp,tls} $PROJPATH/consumerPeer/crypto
+cp -r $PEERS/consumer-org/peers/consumer-peer/msp $PROJPATH/consumerPeer/crypto
+cp -r $PEERS/consumer-org/peers/consumer-peer/tls $PROJPATH/consumerPeer/crypto
 # cp -r $PEERS/dealer-org/peers/dealer-peer/{msp,tls} $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/msp $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/tls $PROJPATH/dealerPeer/crypto
@@ -81,8 +81,8 @@ mv $ACCREDITORCAPATH/ca/*-cert.pem $ACCREDITORCAPATH/ca/cert.pem
 mv $ACCREDITORCAPATH/tls/*_sk $ACCREDITORCAPATH/tls/key.pem
 mv $ACCREDITORCAPATH/tls/*-cert.pem $ACCREDITORCAPATH/tls/cert.pem
 
-cp $PEERS/repairdealer-org/ca/* $CONSUMERCAPATH/ca
-cp $PEERS/repairdealer-org/tlsca/* $CONSUMERCAPATH/tls
+cp $PEERS/consumer-org/ca/* $CONSUMERCAPATH/ca
+cp $PEERS/consumer-org/tlsca/* $CONSUMERCAPATH/tls
 mv $CONSUMERCAPATH/ca/*_sk $CONSUMERCAPATH/ca/key.pem
 mv $CONSUMERCAPATH/ca/*-cert.pem $CONSUMERCAPATH/ca/cert.pem
 mv $CONSUMERCAPATH/tls/*_sk $CONSUMERCAPATH/tls/key.pem
