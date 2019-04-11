@@ -15,7 +15,7 @@ echo "#################################################################"
 echo "### Generating channel configuration transaction 'channel.tx' ###"
 echo "#################################################################"
 $PROJPATH/bin/configtxgen -profile FourOrgsChannel -outputCreateChannelTx $CLIPATH/channel.tx -channelID $CHANNEL_NAME
-cp $CLIPATH/channel.tx $PROJPATH/web
+# cp $CLIPATH/channel.tx $PROJPATH/web
 echo
 echo "#################################################################"
 echo "####### Generating anchor peer update for ProducerOrg ##########"

@@ -15,17 +15,17 @@ $PROJPATH/bin/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=
 
 sh generate-cfgtx.sh
 
-# rm -rf $PROJPATH/{orderer,producerPeer,accreditorPeer,repairShopPeer,dealerPeer}/crypto
+# rm -rf $PROJPATH/{orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}/crypto
 rm -rf $PROJPATH/orderer/crypto
 rm -rf $PROJPATH/producerPeer/crypto
 rm -rf $PROJPATH/accreditorPeer/crypto
-rm -rf $PROJPATH/repairShopPeer/crypto
+rm -rf $PROJPATH/consumerPeer/crypto
 rm -rf $PROJPATH/dealerPeer/crypto
-# mkdir $PROJPATH/{orderer,producerPeer,accreditorPeer,repairShopPeer,dealerPeer}/crypto
+# mkdir $PROJPATH/{orderer,producerPeer,accreditorPeer,consumerPeer,dealerPeer}/crypto
 mkdir $PROJPATH/orderer/crypto
 mkdir $PROJPATH/producerPeer/crypto
 mkdir $PROJPATH/accreditorPeer/crypto
-mkdir $PROJPATH/repairShopPeer/crypto
+mkdir $PROJPATH/consumerPeer/crypto
 mkdir $PROJPATH/dealerPeer/crypto
 # cp -r $ORDERERS/orderer-org/orderers/orderer0/{msp,tls} $PROJPATH/orderer/crypto
 cp -r $ORDERERS/orderer-org/orderers/orderer0/msp $PROJPATH/orderer/crypto
@@ -36,9 +36,9 @@ cp -r $PEERS/producer-org/peers/producer-peer/tls $PROJPATH/producerPeer/crypto
 # cp -r $PEERS/accreditor-org/peers/accreditor-peer/{msp,tls} $PROJPATH/accreditorPeer/crypto
 cp -r $PEERS/accreditor-org/peers/accreditor-peer/msp $PROJPATH/accreditorPeer/crypto
 cp -r $PEERS/accreditor-org/peers/accreditor-peer/tls $PROJPATH/accreditorPeer/crypto
-# cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/{msp,tls} $PROJPATH/repairShopPeer/crypto
-cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/msp $PROJPATH/repairShopPeer/crypto
-cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/tls $PROJPATH/repairShopPeer/crypto
+# cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/{msp,tls} $PROJPATH/consumerPeer/crypto
+cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/msp $PROJPATH/consumerPeer/crypto
+cp -r $PEERS/repairdealer-org/peers/repairdealer-peer/tls $PROJPATH/consumerPeer/crypto
 # cp -r $PEERS/dealer-org/peers/dealer-peer/{msp,tls} $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/msp $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/tls $PROJPATH/dealerPeer/crypto
@@ -46,7 +46,7 @@ cp $CLIPATH/genesis.block $PROJPATH/orderer/crypto/
 
 PRODUCERCAPATH=$PROJPATH/producerCA
 ACCREDITORCAPATH=$PROJPATH/accreditorCA
-CONSUMERCAPATH=$PROJPATH/repairShopCA
+CONSUMERCAPATH=$PROJPATH/consumerCA
 DEALERCAPATH=$PROJPATH/dealerCA
 
 # rm -rf {$PRODUCERCAPATH,$ACCREDITORCAPATH,$CONSUMERCAPATH,$DEALERCAPATH}/{ca,tls}
