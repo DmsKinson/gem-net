@@ -1,66 +1,22 @@
 #!/bin/bash
-set -eu
+set -u
 
-# Select images that local don't have
-# dockerCheck(){
-#     local LOCAL_IMAGES=docker images | awk '/hyperledger/{print $1}' | sed 's/hyperledger\///g' | uniq
-#     for IMAGE in peer orderer ccenv ;do
-#         if [$IMAGE == ]
+# Pull images that local don't have
+dockerPull(){
+    # Create a list filling with images that already exist
+    local LOCAL_IMAGES=$(docker images | awk '/hyperledger/{print $1}' | sed 's/hyperledger\///g' | uniq)
+    local TARGET_IMAGES=(fabric-peer fabric-orderer fabric-ccenv fabric-ca)
 
-# }
-
-dockerFabricPull() {
-  local FABRIC_TAG=$1
-  for IMAGES in peer orderer ccenv; do
-      echo "==> FABRIC IMAGE: $IMAGES"
-      echo
-      docker pull hyperledger/fabric-$IMAGES:$FABRIC_TAG
-      docker tag hyperledger/fabric-$IMAGES:$FABRIC_TAG hyperledger/fabric-$IMAGES
-  done
-}
-
-dockerCaPull() {
-      local CA_TAG=$1
-      echo "==> FABRIC CA IMAGE"
-      echo
-      docker pull hyperledger/fabric-ca:$CA_TAG
-      docker tag hyperledger/fabric-ca:$CA_TAG hyperledger/fabric-ca
-}
-
-BUILD=
-DOWNLOAD=
-if [ $# -eq 0 ]; then
-    BUILD=true
-    PUSH=true
-    DOWNLOAD=true
-else
-    for arg in "$@"
-        do
-            if [ $arg == "build" ]; then
-                BUILD=true
-            fi
-            if [ $arg == "download" ]; then
-                DOWNLOAD=true
-            fi
+    for IMAGE in ${TARGET_IMAGES[@]} 
+    do
+        echo $LOCAL_IMAGES | grep $IMAGE  > /dev/null
+        if [ $? -ne 0 ] ;then
+            echo "Download hyperledger/$IMAGE"
+            docker pull hyperledger/$IMAGE
+        fi
     done
-fi
+}
 
-if [ $DOWNLOAD ]; then
-    : ${CA_TAG:="latest"}
-    : ${FABRIC_TAG:="latest"}
-
-    echo "===> Pulling fabric Images"
-    dockerFabricPull ${FABRIC_TAG}
-
-    echo "===> Pulling fabric ca Image"
-    dockerCaPull ${CA_TAG}
-    echo
-    echo "===> List out hyperledger docker images"
-    docker images | grep hyperledger*
-fi
-
-if [ $BUILD ];
-    then
     echo '############################################################'
     echo '#                 BUILDING CONTAINER IMAGES                #'
     echo '############################################################'
@@ -74,4 +30,3 @@ if [ $BUILD ];
     docker build -t police-ca:latest policeCA/
     docker build -t shop-ca:latest shopCA/
     docker build -t repairshop-ca:latest repairShopCA/
-fi

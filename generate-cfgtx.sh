@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CHANNEL_NAME="gem-net"
 PROJPATH=$(pwd)
