@@ -1,7 +1,8 @@
 #!/bin/bash
 
 export FABRIC_CFG_PATH=$PWD
-sh ./generate-certs.sh
-sh ./docker-images.sh
+bash ./clean.sh
+bash ./generate-certs.sh
+bash ./docker-images.sh
 sleep 5
 docker-compose up -d

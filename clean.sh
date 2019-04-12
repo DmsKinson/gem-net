@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-set -e
-
-# Delete cli
+# Remove CA material in cli/peers, orderer, consumer, dealer, producer, accreditor
 if [ -e cli/peers ] 
 then
-    rm -rf cli
+    rm -rf cli/peers
 fi
 
-for DIR in consumer dealer producer accreditor
+if [ -e orderer/crypto ] ; then
+    rm -rf orderer/crypto;
+fi
+
+for DIR in consumer dealer producer accreditor 
 do
     if [ -e ${DIR}Peer/crypto ] 
     then
@@ -25,3 +27,19 @@ do
         rm -rf ${DIR}CA/tls
     fi
 done
+# Remove docker images
+removeImages(){
+    local LOCAL_IMAGES=$(docker images | awk '{print $1}' | uniq)
+    local TARGET_IMAGES=("orderer" "consumer-peer" "accreditor-peer" "dealer-peer" "producer-peer")
+
+    for IMAGE in ${TARGET_IMAGES[@]} 
+    do
+        echo $LOCAL_IMAGES | grep $IMAGE  > /dev/null
+        if [ $? -eq 0 ] ;then
+            echo "Removing hyperledger/$IMAGE"
+            docker stop $IMAGE
+            docker rmi -f $IMAGE
+        fi
+    done
+    docker container prune -f
+}
