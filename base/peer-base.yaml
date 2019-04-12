@@ -20,9 +20,9 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_MSPCONFIGPATH=/peer/crypto/msp
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_TLS_CERT_FILE=/peer/crypto/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/peer/crypto/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/peer/crypto/tls/ca.crt
     working_dir: /peer
     command: peer node start
     volumes: 

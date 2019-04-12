@@ -35,6 +35,7 @@ removeCA(){
 removeImages(){
     local LOCAL_IMAGES=$(docker images | awk '{print $1}' | uniq)
     local TARGETS=(consumer-peer consumer-ca accreditor-peer accreditor-ca dealer-peer dealer-ca producer-peer producer-ca orderer)
+    docker-compose down 
     for IMAGE in ${TARGETS[@]} 
     do
         echo $LOCAL_IMAGES | grep $IMAGE  > /dev/null

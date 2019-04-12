@@ -2,7 +2,7 @@ version: '2'
 
 networks: 
   gem-net:
-    name: gem-net
+
 services:
 
   producer-ca:
@@ -105,7 +105,6 @@ services:
     - 8053:7053
     depends_on:
     - orderer
-    - producer-peer
     networks: 
     - gem-net
 
@@ -125,8 +124,6 @@ services:
     - 9053:7053
     depends_on:
     - orderer
-    - producer-peer
-    - dealer-peer
     networks: 
     - gem-net
 
@@ -146,8 +143,5 @@ services:
     - 10053:7053
     depends_on:
     - orderer
-    - producer-peer
-    - dealer-peer
-    - consumer-peer
     networks: 
     - gem-net
