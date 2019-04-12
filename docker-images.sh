@@ -1,7 +1,8 @@
 #!/bin/bash
 set -u
-# Pull images that local don't have
-dockerPull(){
+
+# Pull base images that local don't have
+pullBaseImages(){
     # Create a list filling with images that already exist
     echo '############################################################'
     echo '#                 PULLING NON-EXIST IMAGES                 #'
@@ -19,20 +20,23 @@ dockerPull(){
     done
 }
 
-# # Exit when error occurs
-set -e
+buildImages(){
+    echo '############################################################'
+    echo '#                 BUILDING CONTAINER IMAGES                #'
+    echo '############################################################'
+    docker build -t orderer:latest orderer/
+    docker build -t producer-peer:latest producerPeer/
+    docker build -t accreditor-peer:latest accreditorPeer/
+    docker build -t dealer-peer:latest dealerPeer/
+    docker build -t consumer-peer:latest consumerPeer/
+    # docker build -t web:latest web/
+    docker build -t producer-ca:latest producerCA/
+    docker build -t accreditor-ca:latest accreditorCA/
+    docker build -t dealer-ca:latest dealerCA/
+    docker build -t consumer-ca:latest consumerCA/
+}
+# main
 
-dockerPull
-echo '############################################################'
-echo '#                 BUILDING CONTAINER IMAGES                #'
-echo '############################################################'
-docker build -t orderer:latest orderer/
-docker build -t producer-peer:latest producerPeer/
-docker build -t accreditor-peer:latest accreditorPeer/
-docker build -t dealer-peer:latest dealerPeer/
-docker build -t consumer-peer:latest consumerPeer/
-# docker build -t web:latest web/
-docker build -t producer-ca:latest producerCA/
-docker build -t accreditor-ca:latest accreditorCA/
-docker build -t dealer-ca:latest dealerCA/
-docker build -t consumer-ca:latest consumerCA/
+set -e
+pullBaseImages
+buildImages

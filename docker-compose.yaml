@@ -1,42 +1,53 @@
 version: '2'
 
+networks: 
+  gem-net:
+    name: gem-net
 services:
 
   producer-ca:
-  container_name: producer-ca
-  extends:
-    file: ./base/ca-base.yaml
-    service: ca-base
-  image: producer-ca
-  ports:
-  - 7054:7054
+    container_name: producer-ca
+    extends:
+      file: ./base/ca-base.yaml
+      service: ca-base
+    image: producer-ca
+    ports:
+    - 7054:7054
+    networks: 
+    - gem-net
 
   dealer-ca:
-    container-name: dealer-ca
+    container_name: dealer-ca
     extends:
       file: ./base/ca-base.yaml
       service: ca-base
     image: dealer-ca
     ports:
     - 8054:7054
+    networks: 
+    - gem-net
 
   consumer-ca:
-    container-name: consumer-ca
+    container_name: consumer-ca
     extends:
       file: ./base/ca-base.yaml
       service: ca-base
     image: consumer-ca
     ports:
     - 9054:7054
+    networks: 
+    - gem-net
 
   accreditor-ca:
-    container-name: accreditor-ca
+    container_name: accreditor-ca
     extends:
       file: ./base/ca-base.yaml
       service: ca-base
     image: accreditor-ca
     ports:
     - 10054:7054
+    networks: 
+    - gem-net
 
   orderer:
     container_name: orderer
@@ -56,11 +67,13 @@ services:
     command: orderer
     ports:
     - 7050:7050
+    networks: 
+    - gem-net
 
   producer-peer:
     container_name: producer-peer
     extends:
-      file: ./peer-base.yaml
+      file: ./base/peer-base.yaml
       service: peer-base
     image: producer-peer
     environment:
@@ -73,11 +86,13 @@ services:
     - 7053:7053
     depends_on:
     - orderer
+    networks: 
+    - gem-net
 
   dealer-peer:
     container_name: dealer-peer
     extends:
-      file: ./peer-base.yaml
+      file: ./base/peer-base.yaml
       service: peer-base
     image: dealer-peer
     environment:
@@ -91,11 +106,13 @@ services:
     depends_on:
     - orderer
     - producer-peer
+    networks: 
+    - gem-net
 
   consumer-peer:
     container_name: consumer-peer
     extends:
-      file: ./peer-base.yaml
+      file: ./base/peer-base.yaml
       service: peer-base
     image: consumer-peer
     environment:
@@ -110,11 +127,13 @@ services:
     - orderer
     - producer-peer
     - dealer-peer
+    networks: 
+    - gem-net
 
   accreditor-peer:
     container_name: accreditor-peer
     extends:
-      file: ./peer-base.yaml
+      file: ./base/peer-base.yaml
       service: peer-base
     image: accreditor-peer
     environment:
@@ -130,3 +149,5 @@ services:
     - producer-peer
     - dealer-peer
     - consumer-peer
+    networks: 
+    - gem-net
