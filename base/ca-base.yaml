@@ -4,4 +4,5 @@ services:
   ca-base:
     environment:
     - FABRIC_CA_HOME=/ca
+    working_dir: /ca
     command: fabric-ca-server start

@@ -1,0 +1,26 @@
+{
+    "name": "gem-net",
+    "version": "1.0.0",
+    "description": "Gem-net application implemented in JavaScript",
+    "engines": {
+        "node": ">=8",
+        "npm": ">=5"
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint"
+    },
+    "engineStrict": true,
+    "author": "DmsKinson",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "fabric-ca-client": "1.4.0",
+        "fabric-client": "1.4.0",
+        "fabric-network": "1.4.0",
+        "fabric-contract-api": "1.4.0",
+        "fabric-shim": "1.4.0"
+    },
+    "devDependencies": {
+        "eslint": "^5.9.0"
+    }
+}
