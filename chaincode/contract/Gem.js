@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 'use strict';
 
 // Utility class for ledger state
-const State = require('./lib/state.js');
+const State = require('./lib/State.js');
 
 // Enumerate commercial paper state values
 const cpState = {
@@ -14,26 +14,40 @@ const cpState = {
     POSSESSED: 3
 };
 
+
 /**
  * GemPaper class extends State class
  * Class will be used by application and smart contract to define a paper
  */
-class GemPaper extends State {
+class Gem extends State {
 
     constructor(obj) {
-        super(GemPaper.getClass(), [obj.issuer, obj.paperNumber]);
+        super(Gem.getClass(), [obj.producer, obj.gemID]);
         Object.assign(this, obj);
     }
 
-    /**
-     * Basic getters and setters
-    */
-    getIssuer() {
-        return this.issuer;
+    // /**
+    //  * Basic getters and setters
+    // */
+
+    // getProducer() {
+    //     return this.producer;
+    // }
+
+    // setProducer(newProducer) {
+    //     this.issuer = newProducer;
+    // }
+
+    setLastTransactionDate(lastTransactionDate) {
+        this.lastTransactionDate = lastTransactionDate;
     }
 
-    setIssuer(newIssuer) {
-        this.issuer = newIssuer;
+    setCurrentValue(currentValue) {
+        this.currentValue = currentValue;
+    }
+
+    setCert(gemCert) {
+        this.gemCert = gemCert;
     }
 
     getOwner() {
@@ -45,9 +59,9 @@ class GemPaper extends State {
     }
 
     /**
-     * Useful methods to encapsulate commercial paper states
+     * Useful methods to encapsulate gem states
      */
-    setIssued() {
+    setProduced() {
         this.currentState = cpState.PRODUCED;
     }
 
@@ -55,11 +69,11 @@ class GemPaper extends State {
         this.currentState = cpState.TRADING;
     }
 
-    setRedeemed() {
+    setPossessed() {
         this.currentState = cpState.POSSESSED;
     }
 
-    isIssued() {
+    isProduced() {
         return this.currentState === cpState.PRODUCED;
     }
 
@@ -67,12 +81,12 @@ class GemPaper extends State {
         return this.currentState === cpState.TRADING;
     }
 
-    isRedeemed() {
+    isPossessed() {
         return this.currentState === cpState.POSSESSED;
     }
 
     static fromBuffer(buffer) {
-        return GemPaper.deserialize(Buffer.from(JSON.parse(buffer)));
+        return Gem.deserialize(Buffer.from(JSON.parse(buffer)));
     }
 
     toBuffer() {
@@ -84,19 +98,19 @@ class GemPaper extends State {
      * @param {Buffer} data to form back into the object
      */
     static deserialize(data) {
-        return State.deserializeClass(data, GemPaper);
+        return State.deserializeClass(data, Gem);
     }
 
     /**
      * Factory method to create a commercial paper object
      */
-    static createInstance(issuer, paperNumber, issueDateTime, maturityDateTime, faceValue) {
-        return new GemPaper({ issuer, paperNumber, issueDateTime, maturityDateTime, faceValue });
+    static createInstance(producer, gemID, owner, produceDate, lastTransactionDate, gemCert, currentValue) {
+        return new Gem({ producer, gemID, owner, produceDate, lastTransactionDate, gemCert, currentValue });
     }
 
     static getClass() {
-        return 'org.gemnet.gempaper';
+        return 'org.gemnet.gem';
     }
 }
 
-module.exports = GemPaper;
+module.exports = Gem;
