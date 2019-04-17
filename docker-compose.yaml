@@ -1,7 +1,7 @@
 version: '2'
 
 networks: 
-  gem-net:
+  main:
 
 services:
 
@@ -14,7 +14,7 @@ services:
     ports:
     - 7054:7054
     networks: 
-    - gem-net
+    - main
 
   dealer-ca:
     container_name: dealer-ca
@@ -25,7 +25,7 @@ services:
     ports:
     - 8054:7054
     networks: 
-    - gem-net
+    - main
 
   consumer-ca:
     container_name: consumer-ca
@@ -36,7 +36,7 @@ services:
     ports:
     - 9054:7054
     networks: 
-    - gem-net
+    - main
 
   accreditor-ca:
     container_name: accreditor-ca
@@ -47,7 +47,7 @@ services:
     ports:
     - 10054:7054
     networks: 
-    - gem-net
+    - main
 
   orderer:
     container_name: orderer
@@ -68,7 +68,7 @@ services:
     ports:
     - 7050:7050
     networks: 
-    - gem-net
+    - main
 
   producer-peer:
     container_name: producer-peer
@@ -87,7 +87,7 @@ services:
     depends_on:
     - orderer
     networks: 
-    - gem-net
+    - main
 
   dealer-peer:
     container_name: dealer-peer
@@ -106,7 +106,7 @@ services:
     depends_on:
     - orderer
     networks: 
-    - gem-net
+    - main
 
   consumer-peer:
     container_name: consumer-peer
@@ -125,7 +125,7 @@ services:
     depends_on:
     - orderer
     networks: 
-    - gem-net
+    - main
 
   accreditor-peer:
     container_name: accreditor-peer
@@ -144,4 +144,4 @@ services:
     depends_on:
     - orderer
     networks: 
-    - gem-net
+    - main
