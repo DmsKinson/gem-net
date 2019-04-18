@@ -6,12 +6,12 @@ echo "#################################################################"
 echo "#######        Generating cryptographic material       ##########"
 echo "#################################################################"
 PROJPATH=$(pwd)
-CLIPATH=$PROJPATH/cli/peers
-ORDERERS=$CLIPATH/ordererOrganizations
-PEERS=$CLIPATH/peerOrganizations
+CRYPTO=$PROJPATH/crypto
+ORDERERS=$CRYPTO/ordererOrganizations
+PEERS=$CRYPTO/peerOrganizations
 
-rm -rf $CLIPATH
-$PROJPATH/bin/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
+rm -rf $CRYPTO
+$PROJPATH/bin/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CRYPTO
 
 sh generate-cfgtx.sh
 
@@ -42,7 +42,7 @@ cp -r $PEERS/consumer-org/peers/consumer-peer/tls $PROJPATH/consumerPeer/crypto
 # cp -r $PEERS/dealer-org/peers/dealer-peer/{msp,tls} $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/msp $PROJPATH/dealerPeer/crypto
 cp -r $PEERS/dealer-org/peers/dealer-peer/tls $PROJPATH/dealerPeer/crypto
-cp $CLIPATH/genesis.block $PROJPATH/orderer/crypto/
+cp $CRYPTO/genesis.block $PROJPATH/orderer/crypto/
 
 PRODUCERCAPATH=$PROJPATH/producerCA
 ACCREDITORCAPATH=$PROJPATH/accreditorCA
