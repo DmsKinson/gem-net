@@ -1,33 +1,14 @@
 #!/bin/bash
 
-# Remove CA material in cli/peers, orderer, consumer, dealer, producer, accreditor
-removeCA(){
-    if [ -e cli/peers ] 
+# Remove Crypto material in cli/peers, orderer, consumer, dealer, producer, accreditor
+removeCrypto(){
+    if [ -e crypto ] 
     then
-        rm -rf cli/peers
+        rm -rf crypto
     fi
-
-    if [ -e orderer/crypto ] ; then
-        rm -rf orderer/crypto;
-    fi
-
-    for DIR in consumer dealer producer accreditor 
-    do
-        if [ -e ${DIR}Peer/crypto ] 
-        then
-            rm -rf ${DIR}Peer/crypto
-        fi
-    
-        if [ -e ${DIR}CA/ca ] 
-        then
-            rm -rf ${DIR}CA/ca
-        fi
-    
-        if [ -e ${DIR}CA/tls ] 
-        then
-            rm -rf ${DIR}CA/tls
-        fi
-    done
+    rm -rf images/CA/*ca
+    rm -rf images/peer/*-crypto
+    rm -rf images/orderer/crypto
 }
 
 
@@ -49,5 +30,5 @@ removeImages(){
     docker container prune -f
 }
 
-removeCA
+removeCrypto
 removeImages

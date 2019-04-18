@@ -19,32 +19,32 @@ Organizations:
 - &OrdererOrg
   Name: OrdererOrg
   ID: OrdererMSP
-  MSPDir: cli/peers/ordererOrganizations/orderer-org/msp
+  MSPDir: crypto/ordererOrganizations/orderer-org/msp
 - &ProducerOrg
   Name: ProducerOrgMSP
   ID: ProducerOrgMSP
-  MSPDir: cli/peers/peerOrganizations/producer-org/msp
+  MSPDir: crypto/peerOrganizations/producer-org/msp
   AnchorPeers:
   - Host: producer-peer
     Port: 7051
 - &DealerOrg
   Name: DealerOrgMSP
   ID: DealerOrgMSP
-  MSPDir: cli/peers/peerOrganizations/dealer-org/msp
+  MSPDir: crypto/peerOrganizations/dealer-org/msp
   AnchorPeers:
   - Host: dealer-peer
     Port: 7051
 - &ConsumerOrg
   Name: ConsumerOrgMSP
   ID: ConsumerOrgMSP
-  MSPDir: cli/peers/peerOrganizations/consumer-org/msp
+  MSPDir: crypto/peerOrganizations/consumer-org/msp
   AnchorPeers:
   - Host: consumer-peer
     Port: 7051
 - &AccreditorOrg
     Name: AccreditorOrgMSP
     ID: AccreditorOrgMSP
-    MSPDir: cli/peers/peerOrganizations/accreditor-org/msp
+    MSPDir: crypto/peerOrganizations/accreditor-org/msp
     AnchorPeers:
     - Host: accreditor-peer
       Port: 7051

@@ -8,7 +8,7 @@ services:
   producer-ca:
     container_name: producer-ca
     extends:
-      file: ./base/ca-base.yaml
+      file: ./images/CA/ca-base.yaml
       service: ca-base
     image: producer-ca
     ports:
@@ -19,7 +19,7 @@ services:
   dealer-ca:
     container_name: dealer-ca
     extends:
-      file: ./base/ca-base.yaml
+      file: ./images/CA/ca-base.yaml
       service: ca-base
     image: dealer-ca
     ports:
@@ -30,7 +30,7 @@ services:
   consumer-ca:
     container_name: consumer-ca
     extends:
-      file: ./base/ca-base.yaml
+      file: ./images/CA/ca-base.yaml
       service: ca-base
     image: consumer-ca
     ports:
@@ -41,7 +41,7 @@ services:
   accreditor-ca:
     container_name: accreditor-ca
     extends:
-      file: ./base/ca-base.yaml
+      file: ./images/CA/ca-base.yaml
       service: ca-base
     image: accreditor-ca
     ports:
@@ -73,7 +73,7 @@ services:
   producer-peer:
     container_name: producer-peer
     extends:
-      file: ./base/peer-base.yaml
+      file: ./images/peer/peer-base.yaml
       service: peer-base
     image: producer-peer
     environment:
@@ -92,7 +92,7 @@ services:
   dealer-peer:
     container_name: dealer-peer
     extends:
-      file: ./base/peer-base.yaml
+      file: ./images/peer/peer-base.yaml
       service: peer-base
     image: dealer-peer
     environment:
@@ -111,7 +111,7 @@ services:
   consumer-peer:
     container_name: consumer-peer
     extends:
-      file: ./base/peer-base.yaml
+      file: ./images/peer/peer-base.yaml
       service: peer-base
     image: consumer-peer
     environment:
@@ -130,7 +130,7 @@ services:
   accreditor-peer:
     container_name: accreditor-peer
     extends:
-      file: ./base/peer-base.yaml
+      file: ./images/peer/peer-base.yaml
       service: peer-base
     image: accreditor-peer
     environment:

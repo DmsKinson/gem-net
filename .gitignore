@@ -3,6 +3,7 @@
 /src
 /pkg
 
+images/CA/config
 /**/ca
 /**/tls
 /**/crypto

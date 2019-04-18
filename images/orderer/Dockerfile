@@ -1,4 +1,5 @@
 FROM docker.io/hyperledger/fabric-orderer:latest
 
-RUN mkdir /orderer
+RUN mkdir -p /orderer/crypto
 COPY crypto /orderer/crypto
+

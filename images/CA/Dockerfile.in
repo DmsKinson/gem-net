@@ -1,0 +1,5 @@
+FROM docker.io/hyperledger/fabric-ca:latest
+RUN mkdir  /ca
+COPY config/CA_NAME-ca-server-config.yaml /ca/fabric-ca-server-config.yaml
+COPY CA_NAME-ca/* /ca/ca/
+COPY CA_NAME-tlsca/* /ca/tls/

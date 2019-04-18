@@ -24,19 +24,45 @@ buildImages(){
     echo '############################################################'
     echo '#                 BUILDING CONTAINER IMAGES                #'
     echo '############################################################'
-    docker build -t orderer:latest orderer/
-    docker build -t producer-peer:latest producerPeer/
-    docker build -t accreditor-peer:latest accreditorPeer/
-    docker build -t dealer-peer:latest dealerPeer/
-    docker build -t consumer-peer:latest consumerPeer/
-    # docker build -t web:latest web/
-    docker build -t producer-ca:latest producerCA/
-    docker build -t accreditor-ca:latest accreditorCA/
-    docker build -t dealer-ca:latest dealerCA/
-    docker build -t consumer-ca:latest consumerCA/
-}
-# main
+    local PWD=$(pwd)
+    echo "Building orderer images"
+    docker build -t orderer:latest images/orderer
+    # Create peer images
+    for PEER in producer accreditor dealer consumer;
+    do
+        # Create peer images
+        echo "Building ${PEER}-peer image..."
+        cp -f images/peer/Dockerfile.in images/peer/Dockerfile
+        sed -i -e "s#PEER#${PEER}#g" images/peer/Dockerfile
+        docker build -t "${PEER}-peer" images/peer
+        # Create CA images
+        echo "Building ${PEER}-ca image..."
+        cp -f images/CA/Dockerfile.in images/CA/Dockerfile
+        sed -i "s#CA_NAME#${PEER}#g" images/CA/Dockerfile
+        docker build -t "${PEER}-ca" images/CA
+    done
 
+    if [ -e images/peer/Dockerfile ]
+    then
+        rm images/peer/Dockerfile
+    fi
+    
+    if [ -e images/CA/Dockerfile ]
+    then
+        rm images/CA/Dockerfile
+    fi
+    # # Create CA images
+    # for CA in producer-ca accreditor-ca dealer-ca consumer-ca;
+    # do
+    #     # Replace name to create specific config 
+    #     cp images/CA/config/fabric-ca-server-config.yaml images/CA
+    #     sed -i "s/CA_NAME/${CA}/g" images/CA/fabric-ca-server-config.yaml > /dev/null
+    #     docker build -t $CA images/CA
+    # done
+    
+}
+
+# Main
 set -e
 pullBaseImages
 buildImages
